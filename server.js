@@ -17,17 +17,16 @@ app.get('/', (req, res) => {
 
     var arrCount = [];   //array de armazenamento e contagem de palavras
 
-    lerArquivo();
+    DadosArquivo();
     
-    function lerArquivo(){  //recebe o arquivo como input
-       var data = fs.readFileSync('biblia.txt','utf8'); //english version
-       //var data = fs.readFileSync('./input/biblia-pt-br.txt','utf8');  //portuguese version
+    function DadosArquivo(){  //ler o arquivo bibilia.txt
+       var data = fs.readFileSync('biblia.txt','utf8');
        regexData(data);
     }
     
     function regexData(data) { //trata o array recebido
        const elemArray = Array.from(data.split(/\s+/));   //faz um split nas palavras, por espaço e armazena em um array
-       var regex = /[/,:;.?*!-]\s+|\s+/g; //regex para remover pontos e vírgulas
+       var regex = /[/,:;.?*!-]\s+|\s+/g; //regex para remover os caracteres especiais
     
        elemArray.forEach(element => {   //função que percorre cada elemento do array      
           if (element.length >= 4)   //continua somente se a palavra tiver mais que 3 caracteres
@@ -64,7 +63,7 @@ app.get('/', (req, res) => {
        });
     
        generateChart(topValues.slice(0,10));
-       //console.log(topValues);
+      
     }
     
      function generateChart(topValues) {
@@ -76,32 +75,11 @@ app.get('/', (req, res) => {
        console.log(topValues);
        res.render('txt', {topValues : topValues});
        //res.json({ topValues: topValues});
-       //res.write(topValues);
-     
-  
+       
     } 
     
-     
-    /* fs.readFile('biblia.txt', 'utf-8', function(err, data) {
-        var palavras = data.split(/[/,:;.?*!-]\s+|\s+/g); //separa as palavras usando pelo o espaço
-
-        var linha = data.split(/\r?\n/); //separa as linhas
-        var totalrepeticao = (data.match(/Lord/gi) || []).length; //verifica quantas vezes a palavra é repetida
-        console.log("Total Linha: " + linha.length);
-        console.log("Total Palavras: " + palavras.length);
-        console.log("Total Repetição: " + totalrepeticao);
-        res.write(data);
-        res.end();
-    }); */
 }); 
  
-/* fs.readFile('biblia.txt', 'utf-8', function(err, data) {
-    var linha = data.split(/\r?\n/);
-    linha.forEach(function(linha){
-        console.log(linha);        
-    });
-    console.log(linha.length);
-}) */
 
 app.listen(8080, function() {
   console.log('App de Exemplo escutando na porta 8080!');
